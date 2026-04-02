@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Paris",
+    "main": {
+      "temp": 281.37,
+      "pressure": 1019
+    }
+  },
+  {
+    "name": "London",
+    "main": {
+      "temp": 278.93,
+      "pressure": 1020
+    }
+  },
+  {
+    "name": "Tokyo",
+    "main": {
+      "temp": 288.93,
+      "pressure": 1004
+    }
+  }
+]

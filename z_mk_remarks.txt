@@ -1,0 +1,27 @@
+# Creating directories
+mkdir ./dags ./logs ./plugins
+mkdir clean_data
+mkdir raw_files
+
+# If you have permission problems
+sudo chmod -R 777 logs/
+sudo chmod -R 777 dags/
+sudo chmod -R 777 plugins/
+
+
+echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
+docker compose up airflow-init
+
+wget https://dst-de.s3.eu-west-3.amazonaws.com/airflow_avance_fr/eval/data.csv -O clean_data/data.csv
+echo '[]' >> raw_files/null_file.json
+docker compose up -d
+
+
+# api OpenWeather
+69bd1c7e158d4ea8242037e19f96a838
+517753b8ddc392412ffa1e08178808e6
+517753b8ddc392412ffa1e08178808e6
+16bbf99e4eacf331421675e1e52a32d1
+curl -X GET "https://api.openweathermap.org/data/2.5/weather?q=paris&appid=69bd1c7e158d4ea8242037e19f96a838"
+curl -X GET "https://api.openweathermap.org/data/2.5/weather?q=paris&appid=16bbf99e4eacf331421675e1e52a32d1"
+
