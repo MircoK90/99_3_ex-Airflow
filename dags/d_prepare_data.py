@@ -4,7 +4,8 @@ import os
 
 
 # use relative path as fallback when running locally outside Docker
-CLEAN_DIR = os.getenv("clean_data", os.path.join(os.path.dirname(__file__), "clean_data"))
+CLEAN_DIR = os.getenv("clean_data", 
+                      os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "clean_data"))
 RAW_DIR   = os.getenv("raw_files",  os.path.join(os.path.dirname(__file__), "raw_files"))
 
 
@@ -19,7 +20,7 @@ def prepare_data(path=os.path.join(CLEAN_DIR, 'data.csv')):
     concantening in one dg again
     City get OneHotEncoded)
     """
-    
+
     dfc = []                                    #dfcity
     df = pd.read_csv(path)
 

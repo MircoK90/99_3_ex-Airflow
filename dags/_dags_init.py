@@ -21,7 +21,7 @@ from e_train import MODEL_DIR, train_and_save_model, evaluate_model
 
 # Task 2 and 3:
 def task_transform_data(**context):
-    transform_data_into_csv(n=20, filename="fulldata_container.csv",
+    transform_data_into_csv(n_files=20, filename="data.csv",       # for evolution ogf the Dashboard
                                     raw_dir = RAW_DIR,
                                     clean_dir = CLEAN_DIR)
 
@@ -44,27 +44,38 @@ def task_train_lr(**context):
 
 def task_train_dt(**context):
     X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
-    score = evaluate_model("DecisionTreeRegressor", X, y)
+    score = evaluate_model(DecisionTreeRegressor(), X, y)
     context['ti'].xcom_push(key='score_dt', value=score)
     print(f"DT score: {score:.4f}")
 
 def task_train_rf(**context):
     X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
-    score = evaluate_model("RandomForestRegressor", X, y)
+    score = evaluate_model(RandomForestRegressor(), X, y)
     context['ti'].xcom_push(key='score_rf', value=score)
     print(f"RF score: {score:.4f}")
 
 def task_evaluate_models(**context):
     # pull scores from previous tasks
-    score_lr = context['ti'].xcom_pull(key='score_lr')
-    score_dt = context['ti'].xcom_pull(key='score_dt')
-    score_rf = context['ti'].xcom_pull(key='score_rf')
+    ti = context['ti']
 
-    print(f"LinearRegression score: {score_lr:.4f}")
-    print(f"DecisionTreeRegressor score: {score_dt:.4f}")
-    print(f"RandomForestRegressor score: {score_rf:.4f}")
+    # dict section
+    scores = {
+        "LinearRegression":         ti.xcom_pull(task_ids='task_train_lr', key='score_lr'),         # xcom_pull not only pull!
+        "DecisionTreeRegressor":    ti.xcom_pull(task_ids='task_train_dt', key='score_dt'),
+        "RandomForestRegressor":    ti.xcom_pull(task_ids='task_train_rf', key='score_rf'),
+    }
+
+    models = {
+        "LinearRegression": LinearRegression(),
+        "DecisionTreeRegressor": DecisionTreeRegressor(),
+        "RandomForestRegressor": RandomForestRegressor(),
+    }
 
 
+    best_model = max(scores, key=lambda k: scores[k])
+    print(f"Best model: {best_model} with score {scores[best_model]:.4f}")
+    X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
+    train_and_save_model(models[best_model], X, y, os.path.join(MODEL_DIR, 'best_model.joblib'))
 
 
 
@@ -74,7 +85,7 @@ with DAG(
         "owner" : "AirFlow",
         "start_date": datetime(2024, 1, 1),
     },
-    schedule_interval = timedelta(minutes=2),
+    schedule_interval = timedelta(minutes=1),
     catchup=False
 ) as dag:
     t1 = PythonOperator(
@@ -110,3 +121,7 @@ with DAG(
         python_callable = task_evaluate_models
     )
 
+
+    t1 >> [t2, t3]
+    t3 >> [t4a, t4b, t4c]
+    [t4a, t4b, t4c] >> t5

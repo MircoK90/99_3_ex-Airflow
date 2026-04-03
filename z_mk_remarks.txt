@@ -11,6 +11,7 @@ sudo chmod -R 777 plugins/
 
 echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
 docker compose up airflow-init
+docker compose up -d
 
 wget https://dst-de.s3.eu-west-3.amazonaws.com/airflow_avance_fr/eval/data.csv -O clean_data/data.csv
 echo '[]' >> raw_files/null_file.json

@@ -9,24 +9,30 @@ from datetime import datetime
 
 # Task1
 
-
-
 RAW_DIR   = os.getenv("raw_files",   "/app/raw_files")
 CLEAN_DIR = os.getenv("clean_data", "/app/clean_data")
 
 
-def fetch_weather(**kwargs):
+# Helper API key loader
+def load_api_key():
+    # 1) Versuchen, Airflow zu importieren
     try:
-    # Airflow-Variable versuchen
         from airflow.models import Variable
-        API_KEY = Variable.get("API_KEY")
+        # 2) Versuchen, Variable zu laden
+        return Variable.get("API_KEY")
     except Exception:
-    # Fallback: local from .env
+        # 3) Fallback: .env laden
         from dotenv import load_dotenv
         load_dotenv()
-        API_KEY = os.getenv("API_KEY")
-    
+        return os.getenv("API_KEY")
 
+
+def fetch_weather(**kwargs):
+
+    API_KEY = load_api_key()
+    if not API_KEY:
+        raise RuntimeError("API_KEY konnte nicht geladen werden!")
+    
     # cities = Variable.get("cities", deserialize_json=True)
     # api_key = Variable.get("api_key")
 
@@ -37,7 +43,7 @@ def fetch_weather(**kwargs):
     for city in cities:
         url = (
             f"https://api.openweathermap.org/data/2.5/weather"
-            f"?q={city}&appid={api_key}"
+            f"?q={city}&appid={API_KEY}"
         )
         resp = requests.get(url, timeout=10)
         # important to raise an exception if the request failed, so that the task is marked as failed in Airflow

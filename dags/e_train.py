@@ -28,7 +28,7 @@ def evaluate_model(model, X, y):
 
 
 if __name__ == '__main__':
-    from prepare_data import prepare_data  # prepare X,y from d_prepare_data.py
+    from d_prepare_data import prepare_data  # prepare X,y from d_prepare_data.py
 
     X, y = prepare_data(os.path.join(CLEAN_DIR, 'data_test.csv'))
 
