@@ -27,9 +27,8 @@ def evaluate_model(model, X, y):
 
 
 
-
 if __name__ == '__main__':
-    from prepare_data import prepare_data  # English comment: reuse existing function
+    from prepare_data import prepare_data  # prepare X,y from d_prepare_data.py
 
     X, y = prepare_data(os.path.join(CLEAN_DIR, 'data_test.csv'))
 
@@ -45,7 +44,7 @@ if __name__ == '__main__':
     print(f"DecisionTreeRegressor score: {score_dt:.4f}")
     print(f"RandomForestRegressor score: {score_rf:.4f}")
 
-    # English comment: lower neg_MSE (closer to 0) wins
+    # lower neg_MSE (closer to 0) wins
 
 
     scores = {
@@ -54,6 +53,7 @@ if __name__ == '__main__':
         "RandomForestRegressor":(score_rf, RandomForestRegressor()),
     }
 
+    # eval which performed best and save it
     best_name, (best_score, best_model) = max(scores.items(), key=lambda x: x[1][0])
     print(f"Best model: {best_name} with score {best_score:.4f}")
     train_and_save_model(best_model, X, y, os.path.join(MODEL_DIR, 'best_model.joblib'))

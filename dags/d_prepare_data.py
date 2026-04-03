@@ -19,7 +19,7 @@ def prepare_data(path=os.path.join(CLEAN_DIR, 'data.csv')):
     concantening in one dg again
     City get OneHotEncoded)
     """
-
+    
     dfc = []                                    #dfcity
     df = pd.read_csv(path)
 

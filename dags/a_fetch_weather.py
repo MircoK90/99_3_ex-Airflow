@@ -16,12 +16,20 @@ CLEAN_DIR = os.getenv("clean_data", "/app/clean_data")
 
 
 def fetch_weather(**kwargs):
-    # load
+    try:
+    # Airflow-Variable versuchen
+        from airflow.models import Variable
+        API_KEY = Variable.get("API_KEY")
+    except Exception:
+    # Fallback: local from .env
+        from dotenv import load_dotenv
+        load_dotenv()
+        API_KEY = os.getenv("API_KEY")
+    
+
     # cities = Variable.get("cities", deserialize_json=True)
     # api_key = Variable.get("api_key")
 
-    # hardcoded for test purpose
-    api_key = "16bbf99e4eacf331421675e1e52a32d1"
     cities = ["Paris", "London", "Tokyo"]  # Example city list
 
     results = []
