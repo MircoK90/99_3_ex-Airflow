@@ -16,6 +16,9 @@ wget https://dst-de.s3.eu-west-3.amazonaws.com/airflow_avance_fr/eval/data.csv -
 echo '[]' >> raw_files/null_file.json
 docker compose up -d
 
+airflow python
+pip install "apache-airflow==2.10.5" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.10.5/constraints-3.12.txt"
+
 
 # api OpenWeather
 69bd1c7e158d4ea8242037e19f96a838

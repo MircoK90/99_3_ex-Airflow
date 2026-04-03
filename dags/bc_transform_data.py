@@ -5,10 +5,12 @@ import json
 
 
 
+# Task 2a)
 
-def transform_data_into_csv(n_files=None, filename='data.csv',
+def transform_data_into_csv(n_files=2, filename='data.csv',
                             raw_dir="/app/raw_files",
                             clean_dir="/app/clean_data"):
+
 
     # Use paths passed as arguments — defaults are container paths
     files = sorted(os.listdir(raw_dir), reverse=True)
@@ -35,6 +37,7 @@ def transform_data_into_csv(n_files=None, filename='data.csv',
 
     os.makedirs(clean_dir, exist_ok=True)
     df.to_csv(os.path.join(clean_dir, filename), index=False)
+
 
 
 if __name__ == "__main__":

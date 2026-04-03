@@ -1,3 +1,4 @@
+# e_train.py
 import os
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_score
@@ -10,12 +11,6 @@ CLEAN_DIR = os.getenv("clean_data", os.path.join(os.path.dirname(__file__), "cle
 MODEL_DIR = os.getenv("model_dir", os.path.join(os.path.dirname(__file__), "clean_data"))
 
 
-def evaluate_model(model, X, y):
-    # Evaluate the model using cross-validation
-    cross_validation = cross_val_score(model, X, y, cv=5, scoring='neg_mean_squared_error')
-    return cross_validation.mean()
-
-
 
 def train_and_save_model(model, X, y, path_to_model):
     # Train Models, compatible to LogisticRegression, DecisionTreeRegressor, RandomForestRegressor ...
@@ -23,6 +18,12 @@ def train_and_save_model(model, X, y, path_to_model):
     model.fit(X, y)
     dump(model, path_to_model)
     print(f"{str(model)} saved to {path_to_model}")
+
+
+def evaluate_model(model, X, y):
+    # Evaluate the model using cross-validation
+    cross_validation = cross_val_score(model, X, y, cv=3, scoring='neg_mean_squared_error')
+    return cross_validation.mean()
 
 
 
