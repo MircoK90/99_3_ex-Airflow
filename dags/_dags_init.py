@@ -28,14 +28,14 @@ def task_transform_data(**context):
 
 
 def task_transform_data_full(**context):
-    transform_data_into_csv(n_files=None, filename="fulldata_container.csv",
+    transform_data_into_csv(n_files=None, filename="data.csv",
                                     raw_dir = RAW_DIR,
                                     clean_dir = CLEAN_DIR)
     
 # Task 4abc:
 def task_train_lr(**context):
     # Create Dataset to trian on
-    X, y = prepare_data(path=os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
+    X, y = prepare_data(path=os.path.join(CLEAN_DIR, 'data.csv'))
     # train the model
     score = evaluate_model(LinearRegression(), X, y)    # precalculation without saving it, to see at the end which is best, then its gets saved
     # Save score for eval in Task 5
@@ -43,13 +43,13 @@ def task_train_lr(**context):
     print(f"LinearRegression score: {score:.4f}")   
 
 def task_train_dt(**context):
-    X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
+    X, y = prepare_data(os.path.join(CLEAN_DIR, 'data.csv'))
     score = evaluate_model(DecisionTreeRegressor(), X, y)
     context['ti'].xcom_push(key='score_dt', value=score)
     print(f"DT score: {score:.4f}")
 
 def task_train_rf(**context):
-    X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
+    X, y = prepare_data(os.path.join(CLEAN_DIR, 'data.csv'))
     score = evaluate_model(RandomForestRegressor(), X, y)
     context['ti'].xcom_push(key='score_rf', value=score)
     print(f"RF score: {score:.4f}")

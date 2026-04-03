@@ -22,12 +22,8 @@ pip install "apache-airflow==2.10.5" --constraint "https://raw.githubusercontent
 
 
 # api OpenWeather
-69bd1c7e158d4ea8242037e19f96a838
-517753b8ddc392412ffa1e08178808e6
-517753b8ddc392412ffa1e08178808e6
-16bbf99e4eacf331421675e1e52a32d1
-curl -X GET "https://api.openweathermap.org/data/2.5/weather?q=paris&appid=69bd1c7e158d4ea8242037e19f96a838"
 curl -X GET "https://api.openweathermap.org/data/2.5/weather?q=paris&appid=16bbf99e4eacf331421675e1e52a32d1"
+
 
 
 

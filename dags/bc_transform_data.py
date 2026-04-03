@@ -22,6 +22,11 @@ def transform_data_into_csv(n_files=2, filename='data.csv',
     for f in files:
         with open(os.path.join(raw_dir, f), 'r') as file:
             data_temp = json.load(file)
+
+        # skip empty files
+        if not data_temp:
+            continue
+
         for data_city in data_temp:
             dfs.append(
                 {
