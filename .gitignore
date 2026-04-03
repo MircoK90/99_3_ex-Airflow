@@ -3,3 +3,4 @@ logs/
 __pycache__/
 clean_data/
 raw_files/
+.env
