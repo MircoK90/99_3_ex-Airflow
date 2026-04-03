@@ -27,7 +27,7 @@ def transform_data_into_csv(n_files=2, filename='data.csv',
                 {
                     'temperature': data_city['main']['temp'],
                     'city': data_city['name'],
-                    'pressure': data_city['main']['pressure'],
+                    'pression': data_city['main']['pressure'],      # Due Frecnh Dashboard localhost:8050!
                     'date': f.split('.')[0]
                 }
             )

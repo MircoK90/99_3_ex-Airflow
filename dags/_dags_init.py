@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from a_fetch_weather import fetch_weather
 from bc_transform_data import transform_data_into_csv
 from d_prepare_data import prepare_data
-from e_train import MODEL_DIR, train_and_save_model, evaluate_model
+from e_train import train_and_save_model, evaluate_model
 
 
 # Task 2 and 3:
@@ -28,7 +28,7 @@ def task_transform_data(**context):
 
 
 def task_transform_data_full(**context):
-    transform_data_into_csv(n=None, filename="fulldata_container.csv",
+    transform_data_into_csv(n_files=None, filename="fulldata_container.csv",
                                     raw_dir = RAW_DIR,
                                     clean_dir = CLEAN_DIR)
     
@@ -75,7 +75,9 @@ def task_evaluate_models(**context):
     best_model = max(scores, key=lambda k: scores[k])
     print(f"Best model: {best_model} with score {scores[best_model]:.4f}")
     X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
-    train_and_save_model(models[best_model], X, y, os.path.join(MODEL_DIR, 'best_model.joblib'))
+    train_and_save_model(
+        models[best_model], X, y,
+        os.path.join(CLEAN_DIR, 'best_model.joblib'))
 
 
 

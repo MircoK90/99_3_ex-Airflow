@@ -29,3 +29,21 @@ pip install "apache-airflow==2.10.5" --constraint "https://raw.githubusercontent
 curl -X GET "https://api.openweathermap.org/data/2.5/weather?q=paris&appid=69bd1c7e158d4ea8242037e19f96a838"
 curl -X GET "https://api.openweathermap.org/data/2.5/weather?q=paris&appid=16bbf99e4eacf331421675e1e52a32d1"
 
+
+
+
+Error handling!
+Schnellster Weg - direkt das Log lesen:
+bash# neuestes Log eines Tasks finden
+find ./logs -name "*.log" -path "*prepare_data*" | sort | tail -1
+
+# dann lesen
+cat "./logs/dag_id=03_exam_AirFlow/run_id=.../task_id=prepare_data/attempt=1.log"
+
+Oder in einem Schritt:
+bashfind ./logs -name "*.log" -path "*prepare_data*" | sort | tail -1 | xargs cat
+
+Worker Log für schnellen Überblick:
+bashdocker compose logs airflow-worker 2>&1 | grep -A 5 "ERROR\|Traceback"
+Scheduler Log für Task-Status:
+bashdocker compose logs airflow-scheduler 2>&1 | grep "state=failed"
