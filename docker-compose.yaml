@@ -26,6 +26,11 @@ x-airflow-common: &airflow-common
     - type: bind
       source: ./raw_files
       target: /app/raw_files
+    - type: bind
+      source: ./models
+      target: /app/models
+
+
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   depends_on:
     redis:
@@ -128,6 +133,11 @@ services:
       - type: bind
         source: ./raw_files
         target: /app/raw_files
+      - type: bind
+        source: ./models
+        target: /app/models
+
+
     ports:
       - 8050:8050
 

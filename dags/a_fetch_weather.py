@@ -18,7 +18,7 @@ def load_api_key():
     # 1) try to import Airflow
     try:
         from airflow.models import Variable
-        # 2) lodavion from Airflow Variables
+        # 2) load from Airflow Variables
         return Variable.get("API_KEY")
     except Exception:
         # 3) Fallback: .env
@@ -36,7 +36,7 @@ def fetch_weather(**kwargs):
     # cities = Variable.get("cities", deserialize_json=True)
     # api_key = Variable.get("api_key")
 
-    cities = ["Berlin", "Madrid", "Tokyo"]  # Example city list
+    cities = ["Berlin", "Madrid", "Shanghai"]  # Example city list
 
     results = []
 

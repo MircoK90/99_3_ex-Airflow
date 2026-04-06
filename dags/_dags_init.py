@@ -9,6 +9,7 @@ import sys, os
 
 RAW_DIR = "/app/raw_files"
 CLEAN_DIR = "/app/clean_data" # Model and clean.csv in one Folder togehter
+MODEL_DIR = "/app/models"
 
 # Add project root to path so Airflow can find the modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -28,7 +29,7 @@ def task_transform_data(**context):
 
 
 def task_transform_data_full(**context):
-    transform_data_into_csv(n_files=None, filename="data.csv",
+    transform_data_into_csv(n_files=None, filename="fulldata_container.csv",
                                     raw_dir = RAW_DIR,
                                     clean_dir = CLEAN_DIR)
     
@@ -77,7 +78,7 @@ def task_evaluate_models(**context):
     X, y = prepare_data(os.path.join(CLEAN_DIR, 'fulldata_container.csv'))
     train_and_save_model(
         models[best_model], X, y,
-        os.path.join(CLEAN_DIR, 'best_model.joblib'))
+        os.path.join(MODEL_DIR, 'best_model.joblib'))
 
 
 

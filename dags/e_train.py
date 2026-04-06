@@ -7,13 +7,15 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from joblib import dump
 
-CLEAN_DIR = os.getenv("clean_data", os.path.join(os.path.dirname(__file__), "clean_data"))
-MODEL_DIR = os.getenv("model_dir", os.path.join(os.path.dirname(__file__), "clean_data"))
+BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+CLEAN_DIR = os.path.join(BASE, "clean_data")
+MODEL_DIR = os.getenv("model_dir", os.path.join(BASE, "models"))
 
 
 
 def train_and_save_model(model, X, y, path_to_model):
     # Train Models, compatible to LogisticRegression, DecisionTreeRegressor, RandomForestRegressor ...
+    os.makedirs(os.path.dirname(path_to_model), exist_ok=True)
     model = model
     model.fit(X, y)
     dump(model, path_to_model)

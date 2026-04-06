@@ -12,7 +12,7 @@ def transform_data_into_csv(n_files=2, filename='data.csv',
                             clean_dir="/app/clean_data"):
 
 
-    # Use paths passed as arguments — defaults are container paths
+    # Use paths passed as arguments - defaults are container paths
     files = sorted(os.listdir(raw_dir), reverse=True)
     if n_files:
         files = files[:n_files]
@@ -20,7 +20,14 @@ def transform_data_into_csv(n_files=2, filename='data.csv',
     dfs = []
 
     for f in files:
-        with open(os.path.join(raw_dir, f), 'r') as file:
+
+        full_path = os.path.join(raw_dir, f)
+
+        # skip directories
+        if not os.path.isfile(full_path):
+            continue
+
+        with open(full_path, 'r') as file:
             data_temp = json.load(file)
 
         # skip empty files
@@ -32,7 +39,7 @@ def transform_data_into_csv(n_files=2, filename='data.csv',
                 {
                     'temperature': data_city['main']['temp'],
                     'city': data_city['name'],
-                    'pression': data_city['main']['pressure'],      # Due Frecnh Dashboard localhost:8050!
+                    'pression': data_city['main']['pressure'],      # Due Frech Dashboard localhost:8050!
                     'date': f.split('.')[0]
                 }
             )
